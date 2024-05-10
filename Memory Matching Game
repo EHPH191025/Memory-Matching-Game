@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>點擊網格</title>
+    <style>
+        body {
+            background-color: purple;
+            color: white;
+            font-family: 'Bitmap Song', serif;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-gap: 10px;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .grid-item {
+          border-radius:30px;
+            width: 80px;
+            height: 80px;
+            background-color: #F0F0F0;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: blue;
+            text-align: center;
+           font-family: Copperplate , serif;
+        }
+
+        .yellow {
+            background-color: #ff0;
+        }
+
+        .green {
+            background-color: #0f0;
+        }
+
+        .purple {
+            background-color: #f0f;
+        }
+
+        header, footer {
+            padding: 10px;
+            text-align: center;
+        }
+
+        h1, b {
+            color: purple;
+            text-align: center;
+            font-style: italic;
+            font-family: 'STSong', serif;
+            background-color: white;
+        }
+
+        footer {
+            margin-top: 20px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            margin: 10px;
+        }
+    </style>
+    <script>
+        function createDynamicGrid() {
+            // Prompt the user for input
+            var gridSize = prompt("輸入網格的大小:");
+
+            // Check if the user entered a valid number
+            if (gridSize && !isNaN(gridSize) && gridSize > 0) {
+                var gridContainer = document.getElementById('gridContainer');
+
+                // Clear any existing grid
+                gridContainer.innerHTML = '';
+
+                // Set the grid layout
+                gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+
+                // Create the grid items
+                for (var i = 1; i <= gridSize * gridSize; i++) {
+                    var gridItem = document.createElement('div');
+                    gridItem.className = 'grid-item';
+                    gridItem.textContent = i;
+
+                    // Attach a click event listener to each grid item
+                    gridItem.addEventListener('click', function() {
+                        var clickCount = parseInt(this.getAttribute('data-click-count')) || 0;
+
+                        clickCount++;
+
+                        if (clickCount === 1) {
+                            this.classList.add('yellow');
+                        } else if (clickCount === 2) {
+                            this.classList.remove('yellow');
+                            this.classList.add('green');
+                        } else if (clickCount === 3) {
+                            this.classList.remove('green');
+                            this.classList.add('purple');
+                        } else if (clickCount === 4) {
+                            this.classList.remove('purple');
+                            clickCount = 0;
+                        }
+
+                        this.setAttribute('data-click-count', clickCount.toString());
+                    });
+
+                    // Append the grid item to the grid container
+                    gridContainer.appendChild(gridItem);
+                }
+            } else {
+                alert("請輸入有效的數字。");
+            }
+        }
+
+        // Run the createDynamicGrid function when the window has finished loading
+        window.onload = createDynamicGrid;
+    </script>
+</head>
+<body>
+<header>
+    <h1>點擊網格</h1>
+</header>
+
+<div class="button-container">
+    <button onclick="createDynamicGrid()"><b>創立實時網格</b></button>
+</div>
+
+<div id="gridContainer" class="grid-container"></div>
+
+<div style="margin-bottom: 40px;"></div>
+
+<footer>
+    <br>
+    <br>
+    <b style="color: purple; display: block; margin: 0 auto; text-align: center;">練習單元</b>
+</footer>
+</body>
+</html>
